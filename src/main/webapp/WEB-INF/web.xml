@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 2012-2016, b3log.org & hacpai.com
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+        http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!--
+    Description: XiaoV web deployment descriptor.
+    Version: 1.0.1.1, Sep 5, 2016
+    Author: Liang Ding
+-->
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+  <listener>
+    <listener-class>org.b3log.xiaov.XiaoVServletListener</listener-class>
+  </listener>
+
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>org.b3log.latke.servlet.filter.EncodingFilter</filter-class>
+    <init-param>
+      <param-name>requestEncoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>responseEncoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <session-config>
+    <session-timeout>
+      60
+    </session-timeout>
+  </session-config>
+
+  <servlet>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <servlet-class>org.b3log.latke.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>XiaoVGetUpServlet</servlet-name>
+    <servlet-class>org.b3log.xiaov.processor.XiaoVGetUpServlet</servlet-class>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>XiaoVGetUpServlet</servlet-name>
+    <url-pattern>/getup</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>QRCodeShowServlet</servlet-name>
+    <servlet-class>org.b3log.xiaov.processor.QRCodeShowServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>QRCodeShowServlet</servlet-name>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+
+</web-app>
