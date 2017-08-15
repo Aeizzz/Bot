@@ -1,14 +1,17 @@
 package com.scienjus.smartqq.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.github.kevinsawicki.http.HttpRequest;
 import com.scienjus.smartqq.Shadowsocks.Shadowsocks;
+import com.scienjus.smartqq.Tuling.NewList;
+import com.scienjus.smartqq.Tuling.Tuling;
 import com.scienjus.smartqq.client.SmartQQClient;
-import com.scienjus.smartqq.model.Message;
 import com.scienjus.smartqq.weather.Weather;
 import javaBean.Results;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.*;
@@ -25,7 +28,6 @@ public class BotController {
     private static final int MESSAGE_TYPE_PRIVATE = 0;
     private static final int MESSAGE_TYPE_GROUP = 1;
     private static final int MESSAGE_TYPE_DISCUSS = 2;
-
 
     private static SmartQQClient client;
 
@@ -91,7 +93,9 @@ public class BotController {
     public void home(String name, final Long id, final int type, final String[] params) {
         try {
             final String strs = "@" + name + "\n" + "roll (1~100随机数点)\n"+
-                    "天气 [地点1 地点2] (地点天气) ";
+                    "天气 [地点1 地点2] (地点天气) \n"+
+                    "SS (免费一天Shadowsocks的账号)\n";
+
 
             if (params.length > 1) {
                 //发送主页面板
@@ -161,4 +165,7 @@ public class BotController {
         }
 
     }
+
+
+
 }

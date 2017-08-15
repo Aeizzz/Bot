@@ -3,6 +3,7 @@ package com.scienjus.smartqq;
 import com.scienjus.smartqq.callback.MessageCallback;
 import com.scienjus.smartqq.client.SmartQQClient;
 import com.scienjus.smartqq.controller.BotController;
+import com.scienjus.smartqq.controller.TulingController;
 import com.scienjus.smartqq.model.*;
 
 import java.text.SimpleDateFormat;
@@ -31,12 +32,12 @@ public class Receiver {
     private static Map<Long, GroupInfo> groupInfoFromID = new HashMap<>();      //群id到群详情映射
     private static Map<Long, Discuss> discussFromID = new HashMap<>();          //讨论组id到讨论组映射
     private static Map<Long, DiscussInfo> discussInfoFromID = new HashMap<>();  //讨论组id到讨论组详情映射
-
     private static boolean working;
+
     /**
      * SmartQQ客户端
      */
-    private static SmartQQClient client = new SmartQQClient(new MessageCallback() {
+    private static SmartQQClient client = new SmartQQClient(new MessageCallback() {BotController controller = new BotController(client);
 
         @Override
         public void onMessage(Message msg) {
@@ -51,6 +52,7 @@ public class Receiver {
             try {
                 System.out.println("[" + getTime() + "] [私聊] " + getFriendNick(msg) + "：" + msg.getContent());
 
+
                 String[] datas = msg.getContent().split(" ");
                 if(datas.length>0){
                     for(String data1 : datas){
@@ -58,6 +60,10 @@ public class Receiver {
                             String data = data1.substring(1,data1.length());
                             String params [] = getParams(msg.getContent(),data);
                             handle(data,MESSAGE_TYPE_PRIVATE,msg,params);
+                        }else{
+                            if(datas[0].startsWith("#")){
+                                handle4(msg.getContent(),getFriendNick(msg),msg.getUserId(),MESSAGE_TYPE_PRIVATE);
+                            }
                         }
                     }
                 }
@@ -86,6 +92,10 @@ public class Receiver {
                             String data = data1.substring(1, data1.length());
                             String params[] = getParams(msg.getContent(), data);
                             handle2(data, MESSAGE_TYPE_GROUP, msg,params);
+                        }else{
+                            if(datas[0].startsWith("#")){
+                                handle4(msg.getContent(),getGroupUserNick(msg),msg.getUserId(),MESSAGE_TYPE_GROUP);
+                            }
                         }
                     }
                 }
@@ -114,6 +124,10 @@ public class Receiver {
                             String data = data1.substring(1, data1.length());
                             String params[] = getParams(msg.getContent(), data);
                             handle3(data, MESSAGE_TYPE_DISCUSS, msg,params);
+                        }else{
+                            if(datas[0].startsWith("#")){
+                                handle4(msg.getContent(),getDiscussUserNick(msg),msg.getUserId(),MESSAGE_TYPE_DISCUSS);
+                            }
                         }
                     }
                 }
@@ -142,6 +156,10 @@ public class Receiver {
     }
     private static void handle3(String cmd, int type, DiscussMessage msg, String [] params){
         switchs(cmd,getDiscussUserNick(msg),msg.getDiscussId(),type,params);
+    }
+    private static void handle4(String msg, String name,Long id, int type){
+        TulingController tulingController = new TulingController(client);
+        tulingController.sendTuling(msg,name,id,type);
 
     }
 

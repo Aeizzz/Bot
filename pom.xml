@@ -26,26 +26,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.b3log</groupId>
-      <artifactId>latke</artifactId>
-      <version>${latke.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.h2database</groupId>
-          <artifactId>h2</artifactId>
-        </exclusion>
-        <exclusion>
-          <artifactId>mail</artifactId>
-          <groupId>javax.mail</groupId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.jboss</groupId>
-          <artifactId>jboss-vfs</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
       <groupId>com.github.kevinsawicki</groupId>
       <artifactId>http-request</artifactId>
       <version>5.6</version>
@@ -56,22 +36,11 @@
       <version>3.1</version>
     </dependency>
 
+
     <dependency>
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
       <version>2.3.23</version>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${servlet.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-webapp</artifactId>
-      <version>${jetty.version}</version>
     </dependency>
 
     <dependency>
@@ -114,11 +83,6 @@
       <artifactId>junit</artifactId>
       <version>4.12</version>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-    </dependency>
 
   </dependencies>
 
@@ -133,21 +97,6 @@
     </resources>
 
     <plugins>
-      <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty.version}</version>
-        <configuration>
-          <httpConnector>
-            <port>8080</port>
-          </httpConnector>
-          <stopKey>stop</stopKey>
-          <stopPort>5500</stopPort>
-          <webAppConfig>
-            <contextPath>/</contextPath>
-          </webAppConfig>
-        </configuration>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -168,55 +117,9 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-
-      <!--
-      <plugin>
-          <groupId>com.mycila.maven-license-plugin</groupId>
-          <artifactId>maven-license-plugin</artifactId>
-          <version>${maven-license-plugin.version}</version>
-          <configuration>
-              <basedir>${basedir}</basedir>
-              <header>src/main/resources/etc/header.txt</header>
-              <quiet>false</quiet>
-              <failIfMissing>true</failIfMissing>
-              <aggregate>true</aggregate>
-              <strictCheck>true</strictCheck>
-              <includes>
-                  <include>**/src/*/java/**/*.java</include>
-                  <include>**/src/*/webapp/js/*.js</include>
-                  <include>**/src/*/webapp/css/*.css</include>
-                  <include>**/src/*/resources/*.properties</include>
-                  <include>**/src/*/webapp/WEB-INF/*.xml</include>
-              </includes>
-              <excludes>
-                  <exclude>**/src/main/java/**/package-info.java</exclude>
-                  <exclude>**/src/main/java/com/**/*.java</exclude>
-                  <exclude>**/src/*/webapp/js/lib/*.js</exclude>
-              </excludes>
-              <useDefaultExcludes>true</useDefaultExcludes>
-              <mapping>
-                  <java>SLASHSTAR_STYLE</java>
-              </mapping>
-              <useDefaultMapping>true</useDefaultMapping>
-              <properties>
-                  <year>2012-2016</year>
-                  <devTeam>b3log.org &amp; hacpai.com</devTeam>
-              </properties>
-              <encoding>UTF-8</encoding>
-          </configuration>
-          <executions>
-              <execution>
-                  <phase>generate-resources</phase>
-                  <goals>
-                      <goal>format</goal>
-                  </goals>
-              </execution>
-          </executions>
-      </plugin>
-      -->
     </plugins>
 
-    <finalName>xiaov</finalName>
+    <finalName>Bot</finalName>
   </build>
 
 </project>

@@ -13,8 +13,6 @@ import net.dongliu.requests.Session;
 import net.dongliu.requests.exception.RequestException;
 import net.dongliu.requests.struct.Cookie;
 import org.apache.log4j.Logger;
-import org.b3log.xiaov.util.XiaoVs;
-
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -63,8 +61,6 @@ public class SmartQQClient implements Closeable {
     //线程开关
     private volatile boolean pollStarted;
 
-    //Bot type
-    private static final int QQ_BOT_TYPE = XiaoVs.getInt("qq.bot.type");
 
     public SmartQQClient(final MessageCallback callback) {
         this.client = Client.pooled().maxPerRoute(5).maxTotal(10).build();
@@ -101,6 +97,7 @@ public class SmartQQClient implements Closeable {
     private void login() {
         getQRCode();
         String url = verifyQRCode();
+        if (url.length()>0) LOGGER.info("登录成功");
         getPtwebqq(url);
         getVfwebqq();
         getUinAndPsessionid();
@@ -152,7 +149,6 @@ public class SmartQQClient implements Closeable {
                 for (String content : result.split("','")) {
                     if (content.startsWith("http")) {
                         LOGGER.info("正在登录，请稍后");
-
                         return content;
                     }
                 }
@@ -247,50 +243,6 @@ public class SmartQQClient implements Closeable {
      */
     public void sendMessageToGroup(long groupId, String msg) {
         LOGGER.debug("开始发送群消息");
-
-        if (3 == QQ_BOT_TYPE) {
-            // 如果是茉莉机器人，则将灵签结果格式化输出
-            JSONObject parseMsg;
-            if (msg.indexOf("\\u8d22\\u795e\\u7237\\u7075\\u7b7e") > 0) {
-                // 财神爷灵签
-                parseMsg = JSONObject.parseObject(msg);
-
-                msg = "";
-                msg += "第" + parseMsg.getString("number2") + "签\r\n\r\n";
-                msg += "签语: " + parseMsg.getString("qianyu") + "\r\n";
-                msg += "注释: " + parseMsg.getString("zhushi") + "\r\n";
-                msg += "解签: " + parseMsg.getString("jieqian") + "\r\n";
-                msg += "解说: " + parseMsg.getString("jieshuo") + "\r\n\r\n";
-                msg += "婚姻: " + parseMsg.getString("hunyin") + "\r\n";
-                msg += "事业: " + parseMsg.getString("shiye") + "\r\n";
-                msg += "运途: " + parseMsg.getString("yuntu");
-                msg = msg.replace("null", "无");
-            } else if (msg.indexOf("\\u6708\\u8001\\u7075\\u7b7e") > 0) {
-                // 观音灵签
-                parseMsg = JSONObject.parseObject(msg);
-
-                msg = "";
-                msg += "第" + parseMsg.getString("number2") + "签\r\n\r\n";
-                msg += "签位: " + parseMsg.getString("haohua") + "\r\n";
-                msg += "签语: " + parseMsg.getString("qianyu") + "\r\n";
-                msg += "诗意: " + parseMsg.getString("shiyi") + "\r\n";
-                msg += "解签: " + parseMsg.getString("jieqian");
-                msg = msg.replace("null", "无");
-            } else if (msg.indexOf("\\u89c2\\u97f3\\u7075\\u7b7e") > 0) {
-                // 月老灵签
-                parseMsg = JSONObject.parseObject(msg);
-
-                msg = "";
-                msg += "第" + parseMsg.getString("number2") + "签\r\n\r\n";
-                msg += "签位: " + parseMsg.getString("haohua") + "\r\n";
-                msg += "签语: " + parseMsg.getString("qianyu") + "\r\n";
-                msg += "注释: " + parseMsg.getString("zhushi") + "\r\n";
-                msg += "解签: " + parseMsg.getString("jieqian") + "\r\n";
-                msg += "白话释义: " + parseMsg.getString("baihua");
-                msg = msg.replace("null", "无");
-            }
-        }
-
         JSONObject r = new JSONObject();
         r.put("group_uin", groupId);
         r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", Font.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
